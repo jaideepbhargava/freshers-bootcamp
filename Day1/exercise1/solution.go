@@ -49,6 +49,4 @@ func main(){
 	inputMat.intitializeMat()
 	inputMat.setValues()
 
-
-
 }
