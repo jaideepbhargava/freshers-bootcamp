@@ -41,6 +41,14 @@ func (mat *Matrix) addTwo(different [][]  int){
 
 }
 
+func (mat *Matrix) printJSON(){
+	for index, row := range (*mat).mat{
+		for j, col:= range row{
+			fmt.Println("{", j, " :",  col, "}")
+		}
+	}
+}
+
 func main(){
 	var inputMat Matrix
 
