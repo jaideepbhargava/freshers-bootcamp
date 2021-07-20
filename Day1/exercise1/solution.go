@@ -31,6 +31,15 @@ func (mat *Matrix) intitializeMat(){
 		(*mat).mat[i] = make([]int, (*mat).numColumn)
 	}
 }
+func (mat *Matrix) addTwo(different [][]  int){
+
+	for index, row := range (*mat).mat{
+		for j, col:= range row{
+			(*mat).mat[index][j] = col+different[index][j]
+		}
+	}
+
+}
 
 func main(){
 	var inputMat Matrix
