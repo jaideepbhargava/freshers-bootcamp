@@ -1,46 +1,50 @@
-
 package main
 
 import "fmt"
 
-type finalSalary interface {
+type totalSalary interface {
 	Salary() int
 }
-type fullTime int
-type freeLancer struct {
-	numofDays int
-	numofHours int
-}
-type contractor int
 
-func (numOfDays fullTime) Salary() int{
-	return 500 * int(numOfDays)
+type fullTime struct {
+	numOfDays int
 }
 
-func (numOfDays contractor) Salary() int{
-	return 100*int(numOfDays)
+type contractor struct {
+	numOfDays int
 }
 
-func (salary freeLancer) Salary() int{
+type freelancer struct {
+	numOfDays int
+	numOfHours int
+}
 
-	return salary.numofHours*salary.numofDays*10
+func (fullTime fullTime) Salary() int{
+	return 500*(fullTime.numOfDays)
+}
+
+func (contractor contractor) Salary() int{
+	return 100*(contractor.numOfDays)
+}
+
+func (freelancer freelancer) Salary() int{
+	return 10*(freelancer.numOfDays)*(freelancer.numOfHours)
 }
 
 func main(){
-	fmt.Println("Enter the number of days in the current month")
 	var numOfDays, numOfHours int
+	fmt.Println("Enter the number of days in the current month: ")
 	fmt.Scan(&numOfDays)
-	fmt.Println("Enter the number of hours the freelancer worked")
+	fmt.Println("Enter the number of hours the freelancer worked: ")
 	fmt.Scan(&numOfHours)
+	fullTime := fullTime{numOfDays: numOfDays}
+	contractor := contractor{numOfDays: numOfDays}
+	freelancer := freelancer{numOfDays: numOfDays, numOfHours: numOfHours}
 
-	salaries := make([]finalSalary, 3)
+	totalSalary := []totalSalary{fullTime, contractor, freelancer}
+	fmt.Println("Salary of fullTime employee is: ",totalSalary[0].Salary())
+	fmt.Println("Salary of contract employee is: ",totalSalary[1].Salary())
+	fmt.Println("Salary of freelance employee is: ",totalSalary[2].Salary())
 
-	salaries[0] = fullTime(numOfDays)
-	salaries[1] = contractor(numOfDays)
-	salaries[2] = freeLancer{numofDays: numOfDays, numofHours: numOfHours}
-
-	fmt.Println("Salary for full time employee is:", salaries[0].Salary())
-	fmt.Println("Salary for full contract employee is:", salaries[1].Salary())
-	fmt.Println("Salary for freelancer is:", salaries[2].Salary())
 
 }

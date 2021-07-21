@@ -25,26 +25,26 @@ func (mat *Matrix) setValues(){
 	(*mat).mat[posRow][posColumn] = input
 }
 
-func (mat *Matrix) intitializeMat(){
+func (mat *Matrix) intitializeMatrix(){
 	(*mat).mat = make([][]int,(*mat).numRows )
 	for i:=range (*mat).mat{
 		(*mat).mat[i] = make([]int, (*mat).numColumn)
 	}
 }
-func (mat *Matrix) addTwo(different [][]  int){
+func (mat *Matrix) addTwoMatrix(different [][]  int){
 
 	for index, row := range (*mat).mat{
-		for j, col:= range row{
-			(*mat).mat[index][j] = col+different[index][j]
+		for counter, value:= range row{
+			(*mat).mat[index][counter] = value+different[index][counter]
 		}
 	}
 
 }
 
 func (mat *Matrix) printJSON(){
-	for index, row := range (*mat).mat{
-		for j, col:= range row{
-			fmt.Println("{", j, " :",  col, "}")
+	for _, row := range (*mat).mat{
+		for index, value:= range row{
+			fmt.Println("{", index, " :",  value, "}")
 		}
 	}
 }
@@ -54,7 +54,8 @@ func main(){
 
 	inputMat.getRows()
 	inputMat.getColumn()
-	inputMat.intitializeMat()
+	inputMat.intitializeMatrix()
 	inputMat.setValues()
+	inputMat.printJSON()
 
 }
