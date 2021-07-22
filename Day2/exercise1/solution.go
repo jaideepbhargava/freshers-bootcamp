@@ -2,9 +2,12 @@ package main
 
 import (
 	"fmt"
+	"sync"
 )
 
-func countFrequency(inputChannel <- chan string, outputChannel chan <- int){
+func countFrequency(inputChannel <- chan string, outputChannel chan <- int, wg *sync.WaitGroup){
+
+	defer wg.Done()
 
 	for inputString := range inputChannel{
 		for i:=0;i<len(inputString);i++{
@@ -13,7 +16,7 @@ func countFrequency(inputChannel <- chan string, outputChannel chan <- int){
 		}
 	}
 
-	close(outputChannel)
+	//close(outputChannel)
 
 }
 
@@ -30,18 +33,25 @@ func main(){
 	}
 
 	inputChannel := make(chan string, noOfStrings)
-	outputChannel := make(chan int, noOfStrings)
+	outputChannel := make(chan int, 100*noOfStrings)
 
-	go countFrequency(inputChannel, outputChannel)
+	var wg sync.WaitGroup
+
+	for i:=0;i<10;i++{
+		wg.Add(1)
+		go countFrequency(inputChannel,outputChannel,&wg)
+	}
 
 	for _,values:= range input{
 		inputChannel <- values
 	}
 	close(inputChannel)
+	wg.Wait()
+	close(outputChannel)
 
 	for {
 		value,indicator:= <-outputChannel
-		if !indicator{
+		if indicator == false{
 			break
 		}
 		frequencyStore[value]++
